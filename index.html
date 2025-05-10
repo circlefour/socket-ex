@@ -23,9 +23,12 @@
     </form>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        console.log('hi wussup');
         // default with no specified url defaults to trying to connect to the host that serves the page
-        const socket = io();
+        const socket = io({
+            auth: {
+                serverOffset: 0
+            }
+        });
 
         const form = document.getElementById('form');
         const input = document.getElementById('input');
@@ -34,12 +37,17 @@
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             if (input.value) {
-                socket.emit('chat message', input.value, 'sup');
+                socket.emit('chat message', input.value);
                 input.value = '';
             }
         });
 
+        socket.on('connect', () => {
+            console.log('connected ', socket.id);
+        });
+
         socket.on('chat message', (msg) => {
+            console.log('received a msg');
             const item = document.createElement('li');
             item.textContent = msg;
             messages.appendChild(item);
