@@ -75,7 +75,8 @@ async function main() {
     
     // have the server listen on specified port
     // server.listen instead of app.listen because socket.io needs to attach itself to a raw http port, not express
-    server.listen(3001, () => {
+    const PORT = process.env.PORT || 3001;
+    server.listen(PORT, () => {
         console.log("server is running on http://localhost:3001");
     });
 }
